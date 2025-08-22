@@ -80,7 +80,7 @@ services:
     image: vijju5557/frontend:v1
     container_name: frontend
     ports:
-    - "8080:80"
+    - "80:80"
     depends_on:
     - catalogue
     - user
