@@ -37,18 +37,10 @@ services:
     - catalogue
     - redis
   mysql:
-  image: mysql:8
-  container_name: mysql
-  environment:
-    MYSQL_ROOT_PASSWORD: roboshop@123
-    MYSQL_DATABASE: roboshop
-    MYSQL_USER: roboshop
-    MYSQL_PASSWORD: roboshop123
-  volumes:
+    image: vijju5557/mysql:v1
+    container_name: mysql
+    volumes:
     - mysql:/var/lib/mysql
-  ports:
-    - "3306:3306"
-
   shipping:
     image: vijju5557/shipping:v1
     container_name: shipping
