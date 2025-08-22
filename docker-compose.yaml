@@ -1,67 +1,52 @@
-version: "3.9"
-
 networks:
   default:
     driver: bridge
     name: roboshop
-
+    #external: true #I created network already using docker network create roboshop
 volumes:
   mongodb:
   redis:
   mysql:
-  rabbitmq:
-
+  rabbitmq: # docker volume create rabbitmq
 services:
   mongodb:
-    image: vijju5557/mongodb:v1
+    image: joindevops/mongodb:v1
     container_name: mongodb
     volumes:
-      - mongodb:/data/db
-
+    - mongodb:/data/db
   catalogue:
-    image: vijju5557/catalogue:v1
+    image: joindevops/catalogue:v1
     container_name: catalogue
     depends_on:
-      - mongodb
-
+    - mongodb
   redis:
     image: redis:7.0
     container_name: redis
     volumes:
-      - redis:/data
-
+    - redis:/data
   user:
-    image: vijju5557/user:v1
+    image: joindevops/user:v1
     container_name: user
     depends_on:
-      - redis
-      - mongodb
-
+    - redis
+    - mongodb
   cart:
-    image: vijju5557/cart:v1
+    image: joindevops/cart:v1
     container_name: cart
     depends_on:
-      - catalogue
-      - redis
-
+    - catalogue
+    - redis
   mysql:
-    image: vijju5557/mysql:v1
+    image: joindevops/mysql:v1
     container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: YourRootPassword
-      MYSQL_DATABASE: roboshop
-      MYSQL_USER: roboshop
-      MYSQL_PASSWORD: roboshop123
     volumes:
-      - mysql:/var/lib/mysql
-
+    - mysql:/var/lib/mysql
   shipping:
-    image: vijju5557/shipping:v1
+    image: joindevops/shipping:v1
     container_name: shipping
     depends_on:
-      - mysql
-      - cart
-
+    - mysql
+    - cart
   rabbitmq:
     image: rabbitmq:3
     container_name: rabbitmq
@@ -69,10 +54,9 @@ services:
       RABBITMQ_DEFAULT_USER: roboshop
       RABBITMQ_DEFAULT_PASS: roboshop123
     volumes:
-      - rabbitmq:/var/lib/rabbitmq
-
+    - rabbitmq:/var/lib/rabbitmq
   payment:
-    image: vijju5557/payment:v1
+    image: joindevops/payment:v1
     container_name: payment
     environment:
       CART_HOST: cart
@@ -83,18 +67,18 @@ services:
       AMQP_USER: roboshop
       AMQP_PASS: roboshop123
     depends_on:
-      - rabbitmq
-      - cart
-      - user
-
+    - rabbitmq
+    - cart
+    - user
   frontend:
-    image: vijju5557/frontend:v1
+    image: joindevops/frontend:v1
     container_name: frontend
     ports:
-      - "80:80"
+    - "80:80"
     depends_on:
-      - catalogue
-      - user
-      - cart
-      - shipping
-      - payment
+    - catalogue
+    - user
+    - cart
+    - shipping
+    - payment
+      
