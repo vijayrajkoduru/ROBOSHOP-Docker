@@ -82,3 +82,4 @@ services:
     - shipping
     - payment
       
+#:-RUN-THIS:- for i in $(ls -d */); do cd $i; name=$(basename "$i"); docker build -t vijju5557/$name:v1 . ; docker push vijju5557/$name:v1 ; cd .. ; done
